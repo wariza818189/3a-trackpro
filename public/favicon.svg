@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+    </linearGradient>
+    <clipPath id="rounded">
+      <rect width="64" height="64" rx="14" ry="14"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="64" height="64" rx="14" ry="14" fill="#0F0F1A"/>
+
+  <!-- "3" character -->
+  <text x="6" y="40" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="34" fill="url(#grad)">3</text>
+
+  <!-- "A" character -->
+  <text x="30" y="40" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="34" fill="url(#grad)">A</text>
+
+  <!-- Tracking chart line -->
+  <polyline
+    points="8,54 18,48 28,52 42,42 56,34"
+    fill="none"
+    stroke="url(#grad)"
+    stroke-width="2.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <!-- Arrow head -->
+  <polyline
+    points="50,30 56,34 52,40"
+    fill="none"
+    stroke="#7C3AED"
+    stroke-width="2.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>
