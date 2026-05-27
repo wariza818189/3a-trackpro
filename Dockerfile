@@ -1,34 +1,36 @@
 FROM php:8.4-apache
 
-# 1. Pag-install sa system dependencies, PHP extensions, ug Node.js
+# 1. Install system dependencies, PHP extensions, and Node.js
 RUN apt-get update && apt-get install -y \
     git curl zip unzip libpng-dev libonig-dev libxml2-dev libpq-dev \
     && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
     && docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 
-# 2. I-enable ang mod_rewrite para mogana ang mga routes sa Laravel
+# 2. Enable mod_rewrite for Laravel routes
 RUN a2enmod rewrite
 
-# 3. I-set ang working directory
+# 3. Set working directory
 WORKDIR /var/www/html
 
-# 4. Usbon ang Apache root paingon sa /public folder sa Laravel
+# 4. Point Apache document root to Laravel's /public folder
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# 5. I-copy ang tibuok files nimo paingon sa server
+# 5. Copy all files to the server
 COPY . /var/www/html
 
-# 6. Pag-install sa Composer
+# 6. Install Composer and PHP dependencies
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
 RUN rm -rf bootstrap/cache/*.php
 
-# 7. ANG MAGIC: I-install ang React dependencies ug i-build ang manifest.json
-RUN npm install
-RUN npm run build
-
-# 8. Hatagan ug saktong permission ang mga folders (gi-apil ang public/build)
+# 7. Set correct permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public
+
+# 8. Make entrypoint script executable
+RUN chmod +x /var/www/html/docker-entrypoint.sh
+
+# 9. Use entrypoint script to generate .env from Render env vars and start Apache
+CMD ["/var/www/html/docker-entrypoint.sh"]
