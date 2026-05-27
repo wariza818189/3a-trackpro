@@ -21,3 +21,23 @@ Route::get('/setup-db-secret-2026', function() {
 Route::get('/{any}', function () {
     return view('welcome');
 })->where('any', '.*');
+
+Route::get('/check-users-2026', function() {
+    // Ipakita ang tanang users sa database karon (gitago ang passwords)
+    return \App\Models\User::select('id', 'name', 'username', 'email')->get();
+});
+
+Route::get('/force-admin-2026', function() {
+    try {
+        // Pugson nato ug ilis ang password sa unang account aron makasulod ka
+        $user = \App\Models\User::first();
+        if($user) {
+            $user->password = \Illuminate\Support\Facades\Hash::make('password123');
+            $user->save();
+            return "SUCCESS! Na-reset ang password. I-try ug login gamit ang account ni: " . $user->name . " (Password: password123)";
+        }
+        return "ERROR: Wala pa gyuy bisan usa ka user sa imong database! Kinahanglan ka mag-register o mag-seed.";
+    } catch (\Exception $e) {
+        return "Error: " . $e->getMessage();
+    }
+});
