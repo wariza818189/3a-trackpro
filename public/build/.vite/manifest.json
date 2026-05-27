@@ -1,0 +1,20 @@
+{
+  "resources/js/app.jsx": {
+    "file": "assets/app-BsHaKCk-.js",
+    "name": "app",
+    "src": "resources/js/app.jsx",
+    "isEntry": true,
+    "css": [
+      "assets/index-BmqQS8lp.css"
+    ]
+  },
+  "resources/js/src/index.css": {
+    "file": "assets/index-BmqQS8lp.css",
+    "name": "index",
+    "names": [
+      "index.css"
+    ],
+    "src": "resources/js/src/index.css",
+    "isEntry": true
+  }
+}
