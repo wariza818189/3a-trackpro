@@ -1,4 +1,4 @@
-FROM php:8.2-apache
+FROM php:8.4-apache
 
 # 1. Pag-install sa system dependencies ug PostgreSQL driver
 RUN apt-get update && apt-get install -y \
