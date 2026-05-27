@@ -3,22 +3,27 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
-// 1. ANG SECRET ROUTE (Kinahanglan naa sa ibabaw aron dili ma-apil sa catch-all)
 Route::get('/setup-db-secret-2026', function() {
     try {
-        // Pag-run sa migrations
+        // 1. Papason ang karaan nga cache aron mapugos siya ug basa sa Render settings
+        Artisan::call('config:clear');
+        Artisan::call('cache:clear');
+
+        // 2. Susiha kung nabasa ba niya ang DATABASE_URL nga imong gibutang sa Render
+        if (empty(env('DATABASE_URL'))) {
+            return 'KASAYPANAN (ERROR): Wala nakita sa system ang imong DATABASE_URL! Palihug balik sa Render Dashboard > Environment, ug siguroha nga sakto ang pagka-paste nimo sa DATABASE_URL didto.';
+        }
+
+        // 3. Kung okay na tanan, i-run ang migrations ug seeders
         Artisan::call('migrate', ['--force' => true]);
-        
-        // Pag-run sa seeders
         Artisan::call('db:seed', ['--force' => true]);
         
-        return 'SUCCESS! Database Migrated and Seeded Successfully! Pwede na nimo i-delete ang /setup-db-secret-2026 sa URL ug ablihan ang system.';
+        return 'SUCCESS! Database Migrated and Seeded Successfully! Pwede na nimo ablihan ang system.';
     } catch (\Exception $e) {
         return 'Naay Error: ' . $e->getMessage();
     }
 });
 
-// 2. ANG IMONG ORIGINAL NGA CATCH-ALL ROUTE (Kinahanglan naa sa pinaka-ubos)
 Route::get('/{any}', function () {
     return view('welcome');
 })->where('any', '.*');
