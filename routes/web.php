@@ -18,6 +18,31 @@ Route::get('/setup-db-secret-2026', function() {
     }
 });
 
+// Reset users only — run this if login is broken
+Route::get('/reset-users-secret-2026', function() {
+    try {
+        Artisan::call('db:seed', [
+            '--class' => 'UserSeeder',
+            '--force' => true,
+        ]);
+        return implode("\n", [
+            '✅ Users reset successfully!',
+            '',
+            'Admin login:',
+            '  Username: admin',
+            '  Password: Admin@2026!',
+            '',
+            'Staff login:',
+            '  Username: staff',
+            '  Password: Staff@2026!',
+            '',
+            '⚠️  Change these passwords after logging in!',
+        ]);
+    } catch (\Exception $e) {
+        return '❌ Error: ' . $e->getMessage();
+    }
+});
+
 Route::get('/{any}', function () {
     return view('welcome');
 })->where('any', '.*');
