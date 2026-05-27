@@ -25,5 +25,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # 7. Pag-install sa Laravel dependencies
 RUN composer install --no-dev --optimize-autoloader
 
+# KINI ANG SOLUSYON SA 127.0.0.1: Papason niya ang imong local config cache
+RUN rm -rf bootstrap/cache/*.php
+
 # 8. Hatagan ug saktong permission ang storage folder
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
