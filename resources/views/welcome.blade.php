@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3A TrackPro</title>
     @viteReactRefresh
-    @vite(['resources/js/app.js', 'resources/js/src/index.css'])
+    @vite(['resources/js/app.jsx', 'resources/js/src/index.css'])
 </head>
 <body>
     <div id="app"></div>
